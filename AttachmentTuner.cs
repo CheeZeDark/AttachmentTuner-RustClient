@@ -6,13 +6,14 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("AttachmentTuner", "YourName", "1.3.3")]
+    [Info("AttachmentTuner", "YourName", "1.3.4")]
     [Description("Tune attachment-influenced hipfire spread and sway on weapons. Automatically removes sway/twitch for default attachments.")]
     public class AttachmentTuner : RustPlugin
     {
         #region Config
 
         private PluginConfig _config;
+        private const string permUse = "attachmenttuner.use";
 
         public class PluginConfig
         {
@@ -146,6 +147,11 @@ namespace Oxide.Plugins
 
         #region Hooks
 
+        private void Init()
+        {
+            permission.RegisterPermission(permUse, this);
+        }
+
         private void OnActiveItemChanged(BasePlayer player, Item oldItem, Item newItem)
         {
             if (newItem == null) return;
@@ -199,6 +205,12 @@ namespace Oxide.Plugins
         [ChatCommand("tuneattach")]
         private void CmdTuneAttach(BasePlayer player, string command, string[] args)
         {
+            if (!permission.UserHasPermission(player.UserIDString, permUse))
+            {
+                player.ChatMessage($"[{Name}] You don’t have permission to use this command.");
+                return;
+            }
+
             if (args.Length < 3)
             {
                 player.ChatMessage("Usage: /tuneattach <attachment_shortname> <property> <value>\nProperties: hipcone | sway | swayspeed");
@@ -241,6 +253,12 @@ namespace Oxide.Plugins
         [ChatCommand("showattach")]
         private void CmdShowAttach(BasePlayer player, string command, string[] args)
         {
+            if (!permission.UserHasPermission(player.UserIDString, permUse))
+            {
+                player.ChatMessage($"[{Name}] You don’t have permission to use this command.");
+                return;
+            }
+
             if (args.Length < 1)
             {
                 player.ChatMessage("Usage: /showattach <attachment_shortname>");
