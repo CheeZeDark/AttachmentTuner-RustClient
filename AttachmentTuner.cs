@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("AttachmentTuner", "YourName", "1.3.4")]
+    [Info("AttachmentTuner", "RikkoMatsumato", "1.3.4")]
     [Description("Tune attachment-influenced hipfire spread and sway on weapons. Automatically removes sway/twitch for default attachments.")]
     public class AttachmentTuner : RustPlugin
     {
